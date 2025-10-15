@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import heroImage from "@assets/generated_images/Neural_network_hero_background_4b6c4abc.png";
+import heroImage from "@assets/generated_images/AI_technology_hero_background_32de6896.png";
 import aboutImage from "@assets/generated_images/AI_workspace_about_section_93533ff9.png";
 
 export default function Home() {
@@ -154,7 +154,7 @@ export default function Home() {
               BHUVANESHWARAN B
             </h1>
             <p className="text-xl md:text-2xl text-foreground font-semibold animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
-              AI Developer | Machine Learning Engineer
+              AI Developer
             </p>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
               Building intelligent systems with 2+ years of hands-on experience in ML, DL, NLP, and GenAI
