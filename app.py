@@ -398,6 +398,6 @@ def create_app():
     except Exception as e:
         print(f"Error creating app: {str(e)}")
         raise  # Re-raise for Vercel logs
-if __name__ == '__main__':
-    app = create_app()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+
+app = create_app()
+app.run(host='0.0.0.0', port=5000, debug=True)
