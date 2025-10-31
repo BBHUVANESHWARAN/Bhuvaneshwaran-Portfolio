@@ -8,8 +8,8 @@ import os, sqlite3, datetime, secrets
 ALLOWED_RESUME_EXTS = {'.pdf'}
 
 def create_app():
-        # Use /tmp on Vercel serverless (writable); normal instance locally
     serverless = os.environ.get("SERVERLESS") == "1"
+
     instance_relative = False if serverless else True
     instance_path = "/tmp/flask_instance" if serverless else None
 
@@ -18,12 +18,24 @@ def create_app():
         instance_relative_config=instance_relative,
         instance_path=instance_path
     )
+
+    # Instance dir (DB lives here for demo)
     os.makedirs(app.instance_path, exist_ok=True)
+
+    import secrets, os  # ensure imported at top in your file
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(16))
     app.config['DATABASE'] = os.path.join(app.instance_path, 'site.db')
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'assets')
+
+    # 🔧 IMPORTANT: use /tmp for uploads on Vercel
+    if serverless:
+        app.config['UPLOAD_FOLDER'] = "/tmp/assets"
+    else:
+        app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'assets')
+
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', 'admin')  # simple demo guard
+
+    app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', 'admin')
+
 
     # ---------- DB helpers ----------
     def get_db():
