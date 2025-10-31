@@ -1,13 +1,18 @@
 
+# --- keep imports at module level ---
 from flask import (
-    Flask, render_template, request, jsonify, send_from_directory, url_for,
-    redirect, flash, session
+    Flask, render_template, request, jsonify, send_from_directory,
+    url_for, redirect, flash, session
 )
-import os, sqlite3, datetime, secrets
+import os
+import sqlite3
+import datetime
+import secrets
 
 ALLOWED_RESUME_EXTS = {'.pdf'}
 
 def create_app():
+    # Use /tmp on Vercel (serverless) but normal instance locally
     serverless = os.environ.get("SERVERLESS") == "1"
 
     instance_relative = False if serverless else True
@@ -19,22 +24,21 @@ def create_app():
         instance_path=instance_path
     )
 
-    # Instance dir (DB lives here for demo)
+    # Instance dir (SQLite lives here in demo)
     os.makedirs(app.instance_path, exist_ok=True)
 
-    import secrets, os  # ensure imported at top in your file
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(16))
     app.config['DATABASE'] = os.path.join(app.instance_path, 'site.db')
 
-    # 🔧 IMPORTANT: use /tmp for uploads on Vercel
+    # Use /tmp for uploads on Vercel; local static/assets when running locally
     if serverless:
         app.config['UPLOAD_FOLDER'] = "/tmp/assets"
     else:
         app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'assets')
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
     app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', 'admin')
+
 
 
     # ---------- DB helpers ----------
@@ -212,14 +216,18 @@ def create_app():
 
     @app.route('/download-resume')
     def download_resume():
-        conn = sqlite3.connect(app.config['DATABASE'])
-        resume = conn.execute("SELECT value FROM settings WHERE key='resume_filename'").fetchone()
+        conn = get_db()  # <-- ensures dict-like rows
+        row = conn.execute(
+            "SELECT value FROM settings WHERE key='resume_filename'"
+        ).fetchone()
         conn.close()
-        filename = (resume['value'] if resume else 'Bhuvaneshwaran_Resume.pdf') or 'Bhuvaneshwaran_Resume.pdf'
+
+        filename = row['value'] if row else 'resume.pdf'
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         if not os.path.exists(path):
-            return jsonify({"ok": False, "error": "Resume file not found on server."}), 404
+            return "Resume not found", 404
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
 
     # ---------- admin dashboard ----------
     @app.route('/admin')
