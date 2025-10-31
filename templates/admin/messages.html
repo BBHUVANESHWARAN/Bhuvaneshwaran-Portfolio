@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% block body %}
+<div class="container" style="padding:2rem 1rem;">
+  <h1>Admin · Contact Messages</h1>
+  <table style="width:100%; border-collapse: collapse; background:#fff; margin-top:1rem; box-shadow: var(--shadow);">
+    <thead>
+      <tr style="text-align:left;">
+        <th style="padding:8px;">When (UTC)</th>
+        <th style="padding:8px;">Name</th>
+        <th style="padding:8px;">Email</th>
+        <th style="padding:8px;">Subject</th>
+        <th style="padding:8px;">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in messages %}
+      <tr style="border-top:1px solid #e5e7eb;">
+        <td style="padding:8px;">{{ m.created_at }}</td>
+        <td style="padding:8px;">{{ m.name }}</td>
+        <td style="padding:8px;">{{ m.email }}</td>
+        <td style="padding:8px;">{{ m.subject }}</td>
+        <td style="padding:8px; white-space: pre-wrap;">{{ m.message }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p style="margin-top:1rem;"><a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">← Back</a></p>
+</div>
+{% endblock %}

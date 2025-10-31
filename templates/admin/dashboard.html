@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}
+{% block body %}
+<div class="container" style="padding:2rem 1rem;">
+  <h1>Admin Dashboard</h1>
+  <p><a class="btn btn-outline" href="{{ url_for('admin_logout') }}">Logout</a></p>
+  <div class="skills-list" style="margin-top:1rem;">
+    <a class="btn" href="{{ url_for('admin_home') }}">Home</a>
+    <a class="btn" href="{{ url_for('admin_about') }}">About</a>
+    <a class="btn" href="{{ url_for('admin_experience') }}">Experience</a>
+    <a class="btn" href="{{ url_for('admin_projects') }}">Projects</a>
+    <a class="btn" href="{{ url_for('admin_contact') }}">Contact Messages</a>
+    <a class="btn" href="{{ url_for('admin_education') }}">Education</a>
+    <a class="btn" href="{{ url_for('admin_resume') }}">Update Resume</a>
+  </div>
+</div>
+{% endblock %}
