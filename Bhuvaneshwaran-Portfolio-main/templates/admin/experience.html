@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+{% block body %}
+<div class="container" style="padding:2rem 1rem;">
+  <h1>Admin · Experience</h1>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}<ul>{% for c,m in messages %}<li style="color:{{ 'green' if c=='ok' else 'crimson' }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% endwith %}
+  <form method="post" style="background:#fff; padding:1rem; border-radius:8px; box-shadow: var(--shadow);">
+    <div class="form-group"><label>Role</label><input name="role" class="form-control" required></div>
+    <div class="form-group"><label>Company</label><input name="company" class="form-control" required></div>
+    <div class="form-group"><label>Start</label><input name="start" class="form-control"></div>
+    <div class="form-group"><label>End</label><input name="end" class="form-control"></div>
+    <div class="form-group"><label>Description</label><textarea name="description" rows="4" class="form-control"></textarea></div>
+    <button class="btn" type="submit">Add</button>
+  </form>
+
+  <h2 style="margin:1.5rem 0 0.5rem;">Existing</h2>
+  <table style="width:100%; border-collapse: collapse; background:#fff; box-shadow: var(--shadow);">
+    <thead><tr><th style="padding:8px;">Role</th><th style="padding:8px;">Company</th><th style="padding:8px;">Period</th><th style="padding:8px;">Description</th><th style="padding:8px;">Action</th></tr></thead>
+    <tbody>
+      {% for e in experiences %}
+      <tr style="border-top:1px solid #e5e7eb;">
+        <td style="padding:8px;">{{ e.role }}</td>
+        <td style="padding:8px;">{{ e.company }}</td>
+        <td style="padding:8px;">{{ e.start }} – {{ e.end }}</td>
+        <td style="padding:8px;">{{ e.description }}</td>
+        <td style="padding:8px;">
+          <form method="post" action="{{ url_for('admin_experience_delete', row_id=e.id) }}" onsubmit="return confirm('Delete this entry?')">
+            <button class="btn btn-outline" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p style="margin-top:1rem;"><a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">← Back</a></p>
+</div>
+{% endblock %}
