@@ -186,15 +186,17 @@ def create_app():
     # ---------- public pages ----------
     @app.route('/')
     def index():
-        conn = sqlite3.connect(app.config['DATABASE'])
-        conn.row_factory = sqlite3.Row
-        settings = {row['key']: row['value'] for row in conn.execute("SELECT key,value FROM settings")}
-        edu = conn.execute("SELECT * FROM education ORDER BY year DESC").fetchall()
-        exps = conn.execute("SELECT * FROM experiences ORDER BY id DESC").fetchall()
-        projs = conn.execute("SELECT * FROM projects ORDER BY id DESC").fetchall()
+        conn = get_db()
+        settings = {row['key']: row['value'] for row in conn.execute("SELECT key, value FROM settings")}
+        education = conn.execute("SELECT * FROM education ORDER BY year DESC").fetchall()
+        experiences = conn.execute("SELECT * FROM experiences ORDER BY id DESC").fetchall()
+        projects = conn.execute("SELECT * FROM projects ORDER BY id DESC").fetchall()
         conn.close()
-        return render_template('index.html',
-            settings=settings, education=edu, experiences=exps, projects=projs)
+        return render_template('index.html', 
+                            settings=settings,
+                            education=education,
+                            experiences=experiences,
+                            projects=projects)
 
     @app.route('/contact', methods=['POST'])
     def contact():
