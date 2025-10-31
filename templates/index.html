@@ -1,0 +1,166 @@
+
+{% extends "base.html" %}
+{% block body %}
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">Bhuvaneshwaran</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="mobile-menu"><i class="fas fa-bars"></i></div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-content">
+      <h1>{{ settings.get('hero_headline','')|safe }}</h1>
+      <p>{{ settings.get('hero_subtitle','')|safe }}</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
+        <a href="{{ url_for('download_resume') }}" class="btn btn-resume"><i class="fas fa-download"></i> Download Resume</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="section-title">
+      <h2>About Me</h2>
+      <p>{{ settings.get('about_text','') }}</p>
+    </div>
+    <div class="about-content">
+      <div class="about-text">
+        <h3>My Skills & Expertise</h3>
+        <p>Passionate about building scalable AI solutions using Python, FastAPI, Django. Expertise in RAG-based AI applications, model optimization, and AI systems.</p>
+        <div class="skills-list">
+          <div class="skill-item"><h4>Programming</h4><p>Python</p></div>
+          <div class="skill-item"><h4>AI/ML Frameworks</h4><p>TensorFlow, PyTorch, Keras, Scikit-learn</p></div>
+          <div class="skill-item"><h4>LLMs & NLP</h4><p>GPT, BERT, T5, Hugging Face, RAG</p></div>
+          <div class="skill-item"><h4>Deployment</h4><p>Flask, Django, FastAPI, RESTful APIs</p></div>
+          <div class="skill-item"><h4>Databases</h4><p>MongoDB, Weaviate, Pinecone, SQL, Neo4j</p></div>
+          <div class="skill-item"><h4>Tools</h4><p>OpenCV, YOLO, Vision Transformers</p></div>
+        </div>
+      </div>
+      <div class="about-text">
+        <h3>Education</h3>
+        {% if education %}
+          {% for e in education %}
+          <div class="education-item">
+            <h4>{{ e.degree }}</h4>
+            <p>{{ e.institution }} ({{ e.year }})</p>
+            {% if e.cgpa %}<p>{{ e.cgpa }}</p>{% endif %}
+          </div>
+          {% endfor %}
+        {% else %}
+          <p>No education records yet.</p>
+        {% endif %}
+
+        <h3 style="margin-top: 2rem;">Achievements</h3>
+        <ul style="margin-left: 1.5rem; color: var(--secondary);">
+          <li>Python(Basic) - Hackerrank</li>
+          <li>Problem Solving(Basic) - Hackerrank</li>
+          <li>NCC Leader - Cadet Under Officer(CUO)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" style="background-color: #f8fafc;">
+  <div class="container">
+    <div class="section-title">
+      <h2>Work Experience</h2>
+      <p>My professional journey in AI development and data science</p>
+    </div>
+    <div class="timeline">
+      {% for x in experiences %}
+      <div class="timeline-item"><div class="timeline-content">
+        <h3>{{ x.role }}</h3><div class="date">{{ x.company }} {% if x.start or x.end %} · {{ x.start }} – {{ x.end or 'Present' }}{% endif %}</div>
+        <p>{{ x.description }}</p>
+      </div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="section-title">
+      <h2>My Projects</h2>
+      <p>Showcasing my work in AI, machine learning, and NLP applications</p>
+    </div>
+    <div class="projects-grid">
+      {% for p in projects %}
+      <div class="project-card">
+        <div class="project-img"><i class="fas fa-robot"></i></div>
+        <div class="project-content">
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.description }}</p>
+          {% if p.tags %}
+          <div class="project-tags">
+            {% for t in p.tags.split(',') %}<span class="tag">{{ t.strip() }}</span>{% endfor %}
+          </div>
+          {% endif %}
+          {% if p.link %}<a href="{{ p.link }}" target="_blank" class="btn">View</a>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background-color: #f8fafc;">
+  <div class="container">
+    <div class="section-title">
+      <h2>Get In Touch</h2>
+      <p>Feel free to reach out for collaborations or just a friendly hello</p>
+    </div>
+    <div class="contact-content">
+      <div class="contact-info">
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div>
+          <h3>Location</h3><p>{{ settings.get('location','') }}</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div>
+          <h3>Phone</h3><p>{{ settings.get('phone','') }}</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div>
+          <h3>Email</h3><p>{{ settings.get('email','') }}</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-globe"></i></div><div>
+          <h3>github</h3><p>{{ settings.get('github','') }}</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-globe"></i></div><div>
+          <h3>linkedin</h3><p>{{ settings.get('linkedin','') }}</p></div></div>
+      </div>
+      <div class="contact-form">
+        <form id="contactForm">
+          <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" class="form-control" required></div>
+          <div class="form-group"><label for="email">Your Email</label><input type="email" id="email" class="form-control" required></div>
+          <div class="form-group"><label for="subject">Subject</label><input type="text" id="subject" class="form-control" required></div>
+          <div class="form-group"><label for="message">Message</label><textarea id="message" rows="5" class="form-control" required></textarea></div>
+          <button type="submit" class="btn">Send Message</button>
+          <p id="formStatus" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo">Bhuvaneshwaran</div>
+    <p>AI Developer & Data Scientist</p>
+    <div class="social-links">
+      {% if settings.get('github') %}<a href="{{ settings.get('github') }}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>{% endif %}
+      {% if settings.get('linkedin') %}<a href="{{ settings.get('linkedin') }}" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>{% endif %}
+      {% if settings.get('twitter') %}<a href="{{ settings.get('twitter') }}" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>{% endif %}
+    </div>
+    <div class="copyright"><p>&copy; {{ (settings.get('hero_headline') or 'Portfolio').split()[0] }}. All Rights Reserved.</p></div>
+  </div>
+</footer>
+{% endblock %}

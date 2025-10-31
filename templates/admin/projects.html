@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+{% block body %}
+<div class="container" style="padding:2rem 1rem;">
+  <h1>Admin · Projects</h1>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}<ul>{% for c,m in messages %}<li style="color:{{ 'green' if c=='ok' else 'crimson' }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% endwith %}
+  <form method="post" style="background:#fff; padding:1rem; border-radius:8px; box-shadow: var(--shadow);">
+    <div class="form-group"><label>Title</label><input name="title" class="form-control" required></div>
+    <div class="form-group"><label>Description</label><textarea name="description" rows="3" class="form-control"></textarea></div>
+    <div class="form-group"><label>Tags (comma separated)</label><input name="tags" class="form-control"></div>
+    <div class="form-group"><label>Link</label><input name="link" class="form-control" placeholder="https://..."></div>
+    <button class="btn" type="submit">Add</button>
+  </form>
+
+  <h2 style="margin:1.5rem 0 0.5rem;">Existing</h2>
+  <table style="width:100%; border-collapse: collapse; background:#fff; box-shadow: var(--shadow);">
+    <thead><tr><th style="padding:8px;">Title</th><th style="padding:8px;">Tags</th><th style="padding:8px;">Link</th><th style="padding:8px;">Action</th></tr></thead>
+    <tbody>
+      {% for p in projects %}
+      <tr style="border-top:1px solid #e5e7eb;">
+        <td style="padding:8px;">{{ p.title }}</td>
+        <td style="padding:8px;">{{ p.tags }}</td>
+        <td style="padding:8px;">{% if p.link %}<a href="{{ p.link }}" target="_blank">Open</a>{% endif %}</td>
+        <td style="padding:8px;">
+          <form method="post" action="{{ url_for('admin_project_delete', row_id=p.id) }}" onsubmit="return confirm('Delete this project?')">
+            <button class="btn btn-outline" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p style="margin-top:1rem;"><a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">← Back</a></p>
+</div>
+{% endblock %}
