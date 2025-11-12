@@ -120,7 +120,7 @@ def create_app():
             ensure_setting('phone', '+91 8098492074')
             ensure_setting('email', 'bhuvaneshboominathan@gmail.com')
             ensure_setting('github', 'https://github.com/BBHUVANESHWARAN')
-            ensure_setting('linkedin', 'https://linkedin.com/in/bhuvaneshwaran-b-45575a216')
+            ensure_setting('linkedin', 'https://www.linkedin.com/in/bhuvaneshwaran-b-ai-developer')
             ensure_setting('twitter', '')
 
             conn.commit()
